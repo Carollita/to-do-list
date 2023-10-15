@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/users")
-//http://localhost:8080/users/
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private IUserRepository userRepository;
 
     @PostMapping("/")
+    //http://localhost:8080/user/
     public ResponseEntity create(@RequestBody UserModel userModel) {
         UserModel username = this.userRepository.findByUsername(userModel.getUsername());
 
