@@ -55,13 +55,25 @@ public class TaskController {
     //* Atualiza tarefa
     @PutMapping("/{id}")
     // http://localhost:8080/tasks/11f967c6-7099-4a4a-a9ce-5a5548f327ab
-    public TaskModel update(@RequestBody TaskModel taskModel, @PathVariable UUID id, HttpServletRequest request) {
+    public ResponseEntity update(@RequestBody TaskModel taskModel, @PathVariable UUID id, HttpServletRequest request) {
+        TaskModel task = this.taskRepository.findById(id).orElse(null);
         Object idUser = request.getAttribute("idUserObject");
 
-        TaskModel task = this.taskRepository.findById(id).orElse(null);
+        // Verifica se a tarefa existe
+        if(task == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tarefa não encontrada!");
+        }
+
+        // Restringe alterações de tarefas por usuário
+        if(!task.getIdUser().equals(idUser)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário não tem permissão para alterar esta tarefa!");
+        }
+
+        // Mescla propriedades não nulas das duas tarefas (não modificada e mnodificada)
         Utils.copyNonNullProperties(taskModel, task);
 
-        return this.taskRepository.save(task);
+        TaskModel taskUpdated = this.taskRepository.save(task);
+        return ResponseEntity.ok().body(taskUpdated);
     }
 }
 
