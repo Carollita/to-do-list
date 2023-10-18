@@ -18,16 +18,16 @@ public class Utils {
 
         PropertyDescriptor[] pds = src.getPropertyDescriptors();
 
-        Set<String> empityNames = new HashSet<>();
+        Set<String> emptyNames = new HashSet<>();
 
         for (PropertyDescriptor pd : pds) {
             Object srcValue = src.getPropertyValue(pd.getName());
 
             if(srcValue == null) {
-                empityNames.add(pd.getName());
+                emptyNames.add(pd.getName());
             }
         }
-        String[] result = new String[empityNames.size()];
-        return  empityNames.toArray(result);
+        String[] result = new String[emptyNames.size()];
+        return  emptyNames.toArray(result);
     }
 }
