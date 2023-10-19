@@ -1,4 +1,6 @@
-FROM ubuntu:lasted AS build
+# https://to-do-list-xitr.onrender.com
+
+FROM ubuntu:latest AS build
 
 RUN apt-ger update
 RUN apt-get install openjdk-17 -y
